@@ -1,0 +1,211 @@
+
+# ==========================================
+# WOOCOMMERCE PRODUCT AUTOMATION
+# ==========================================
+
+# ------------------------------------------
+# 1. PYTHON - AMBIENTES VIRTUAIS
+# ------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+virtualenv/
+.python-version
+
+# ------------------------------------------
+# 2. PYTHON - CACHE E COMPILADOS
+# ------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.hypothesis/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+*.egg-info/
+.eggs/
+build/
+dist/
+pip-wheel-metadata/
+
+# ------------------------------------------
+# 3. CREDENCIAIS E CONFIGURAÇÕES
+# ------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.sample
+
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+credentials.json
+secrets.json
+secrets.yaml
+secrets.yml
+service-account*.json
+token.json
+tokens.json
+auth.json
+
+# ------------------------------------------
+# 4. CHROME / PLAYWRIGHT
+# ------------------------------------------
+chrome-profile*/
+**/chrome-profile*/
+chrome-user-data/
+**/chrome-user-data/
+user-data-dir/
+**/user-data-dir/
+
+playwright/.auth/
+**/playwright/.auth/
+storage_state.json
+storage-state.json
+auth-state.json
+
+playwright-report/
+test-results/
+blob-report/
+trace.zip
+*.har
+
+# ------------------------------------------
+# 5. ARQUIVOS DE LOG
+# ------------------------------------------
+*.log
+logs/
+**/logs/
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ------------------------------------------
+# 6. SCREENSHOTS DE DEBUG
+# ------------------------------------------
+debug_screenshots/
+**/debug_screenshots/
+debug_remocao_fotos/
+**/debug_remocao_fotos/
+screenshots/
+**/screenshots/
+erro_*.png
+erro_*.jpg
+erro_*.jpeg
+
+# ------------------------------------------
+# 7. DADOS E RELATÓRIOS GERADOS
+# ------------------------------------------
+resultado_lote_*.txt
+resultado_remocao_*.txt
+_lista_dashboard.csv
+codigos.csv
+
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+
+# ------------------------------------------
+# 8. EXPORTAÇÕES E DADOS INTERNOS
+# ------------------------------------------
+*.csv
+*.xlsx
+*.xls
+*.xlsm
+
+# Preservar exemplos fictícios documentados
+!examples/*.csv
+!examples/*.xlsx
+!tests/fixtures/*.csv
+
+# ------------------------------------------
+# 9. ARQUIVOS DE PRODUTOS
+# ------------------------------------------
+download/
+downloads/
+**/download/
+**/downloads/
+uploads/
+**/uploads/
+produtos/
+**/produtos/
+datasheets/
+**/datasheets/
+arquivos_gerados/
+**/arquivos_gerados/
+output/
+outputs/
+
+# ------------------------------------------
+# 10. ARQUIVOS COMPACTADOS
+# ------------------------------------------
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+
+# ------------------------------------------
+# 11. ARQUIVOS TEMPORÁRIOS
+# ------------------------------------------
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+.cache/
+temp/
+tmp/
+
+# ------------------------------------------
+# 12. WINDOWS
+# ------------------------------------------
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ------------------------------------------
+# 13. MACOS / LINUX
+# ------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+.Trashes
+.fseventsd/
+.directory
+
+# ------------------------------------------
+# 14. IDE / EDITORES
+# ------------------------------------------
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+.idea/
+*.iml
+
+# ------------------------------------------
+# 15. NODE.JS (SE UTILIZAR)
+# ------------------------------------------
+node_modules/
+.npm/
+.next/
+.nuxt/
+coverage/

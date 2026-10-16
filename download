@@ -1,0 +1,33 @@
+# Segredos e configuração local
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editor e sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Dados gerados / internos (adaptar à estrutura real)
+uploads/
+output/
+outputs/
+exports/
+dados_privados/
+*.sqlite3
+*.db
+*.log
