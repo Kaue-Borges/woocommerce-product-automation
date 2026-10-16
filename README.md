@@ -1,78 +1,106 @@
-# Automação de Cadastro de Produtos no WooCommerce
+# WooCommerce Product Automation
 
-Automação em Python para apoiar a digitalização e a preparação de cadastros de produtos para lojas WooCommerce.
+Ferramentas em **Python, Flask e Playwright** para auxiliar a atualização de produtos existentes no WooCommerce, principalmente na organização e no envio de **imagem principal, galeria de fotos e arquivos para download**.
 
-> **Status:** em desenvolvimento. Este README descreve o objetivo e o fluxo planejado; as funcionalidades disponíveis devem ser confirmadas no código antes da publicação.
+> **Situação:** scripts de automação em evolução. O repositório reúne diferentes versões da interface de cadastro e uma rotina separada para remoção de mídias. Não representa ainda uma plataforma única com API ou importação CSV implementada.
 
-## Objetivo
+## Funcionalidades presentes no código
 
-Reduzir o trabalho manual no cadastro de produtos, padronizando informações e organizando materiais como fotos e fichas técnicas.
+- Localizar produtos no painel WooCommerce pelo **SKU**.
+- Encontrar pastas locais de produtos e classificar arquivos para envio.
+- Cadastrar/atualizar **imagem destacada**, **galeria** e **arquivos para download**.
+- Processar vários SKUs e registrar progresso, resultados e erros.
+- Usar painéis locais em Flask para selecionar uma planilha, iniciar lotes e consultar status ou relatório.
+- Trabalhar com configurações de mais de uma loja na versão `cadastro_dashboardd.py`.
+- Remover mídias e downloads de produtos selecionados, usando os scripts independentes em `Remover_fotos/`.
 
-## Fluxo de trabalho
+**Atenção:** a rotina de remoção modifica dados no WooCommerce. Use somente com autorização, testes e backup adequado. A automação de cadastro também altera produtos reais.
 
-1. Selecionar a empresa/loja de destino (Choice, SAG ou Portwell).
-2. Informar o código do produto (CIGAM), nome e dados complementares.
-3. Anexar imagens e, quando disponível, o datasheet.
-4. Preparar descrições e demais campos do cadastro.
-5. Organizar os arquivos do produto em uma pasta identificada pelo código.
-6. Gerar um CSV compatível com a importação do WooCommerce.
-7. Importar os produtos e validar imagens, documentos e categorias na loja de destino.
+## Estrutura atual
 
-**Importante:** algumas etapas podem estar em implementação ou depender de configuração manual. Atualize a lista após validar o comportamento real da aplicação.
+```text
+.
+├── cadastro_choice.py
+├── cadastro_dashboard.py
+├── cadastro_dashboardd.py
+├── Remover_fotos/
+│   ├── remover_dashboard.py
+│   └── remover_tudo_woocommerce.py
+├── env.example
+├── .gitignore
+└── README.md
+```
 
-## Tecnologias
+| Arquivo | Responsabilidade |
+| --- | --- |
+| `cadastro_choice.py` | Automação interativa/por lote via terminal e Playwright |
+| `cadastro_dashboard.py` | Dashboard Flask para cadastro de produtos |
+| `cadastro_dashboardd.py` | Versão ampliada do dashboard com seleção de loja |
+| `Remover_fotos/remover_dashboard.py` | Interface local para operações de remoção |
+| `Remover_fotos/remover_tudo_woocommerce.py` | Rotinas de busca por SKU e remoção de mídias |
 
-- Python
-- FastAPI
-- Jinja2
-- HTML, CSS e JavaScript
-- WooCommerce (importação CSV / integração conforme a implementação)
+Os dashboards possuem implementação parcialmente duplicada; uma futura refatoração poderá consolidar os fluxos sem perder as funções existentes.
 
-## Estrutura do projeto
+## Requisitos
 
-A estrutura das pastas será documentada após a revisão do código-fonte, evitando indicar arquivos ou módulos que ainda não existam.
+- **Python 3.10+** (o código usa anotações de tipo com `|`).
+- **Google Chrome** disponível para as automações de navegador.
+- Acesso autorizado ao painel WordPress/WooCommerce.
+- Pastas de mídia organizadas por produto e uma lista de SKUs para os fluxos em lote.
 
-## Como executar localmente
-
-> Ajustar os comandos ao ponto de entrada e às dependências reais do projeto.
+Não há um `requirements.txt` consolidado nesta versão. Para testar em um ambiente virtual:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+python -m pip install flask playwright
 ```
 
-Se a aplicação utilizar Uvicorn com um objeto `app` em `main.py`, o comando usual é:
+Esses pacotes cobrem as importações externas centrais dos scripts inspecionados. Dependendo do ambiente, a configuração do navegador e outras dependências podem exigir ajustes.
+
+## Execução
+
+**Cadastro pelo terminal:**
 
 ```powershell
-uvicorn main:app --reload
+python cadastro_choice.py --help
 ```
 
-## Configuração
+O script aceita parâmetros como `--base-url`, `--root` e `--headless`. Confira os valores antes de executar.
 
-Nunca envie credenciais de lojas, tokens de IA ou dados privados para o repositório. Use variáveis de ambiente e mantenha somente exemplos sem valores reais.
+**Dashboard de cadastro:**
 
-Consulte `.env.example` para organizar as configurações necessárias; ajuste os nomes às variáveis que seu código efetivamente utiliza.
+```powershell
+python cadastro_dashboardd.py
+```
 
-## Segurança e privacidade
+A interface principal dessa versão inicia em `http://127.0.0.1:5056`. A versão `cadastro_dashboard.py` também utiliza essa porta: execute **apenas uma das duas por vez**.
 
-- Não versionar `.env`, senhas, tokens ou chaves de API.
-- Não publicar bases de produtos, planilhas internas, fichas técnicas proprietárias ou arquivos de clientes sem autorização.
-- Revisar a lista de arquivos antes de cada commit.
-- Preferir repositório privado enquanto o projeto utilizar dados ou lógica interna das empresas.
+**Dashboard de remoção de mídias:**
 
-## Próximos passos
+```powershell
+python Remover_fotos/remover_dashboard.py
+```
 
-- [ ] Revisar a estrutura atual e atualizar a documentação de instalação.
-- [ ] Confirmar quais fluxos já estão funcionando nas três empresas.
-- [ ] Adicionar exemplos de CSV com dados fictícios.
-- [ ] Documentar erros comuns, testes e processo de importação.
-- [ ] Incluir imagens de demonstração sem dados internos.
+A interface utiliza `http://127.0.0.1:8788`. **Não faça testes de remoção em uma loja de produção.**
+
+## Configurações e segurança
+
+Os scripts ainda contêm URLs de lojas e caminhos locais fixos que precisam ser revisados ao mudar de computador ou ambiente. O arquivo [`env.example`](env.example) é apenas **ilustrativo**: as variáveis listadas nele não substituem automaticamente as configurações usadas pelos scripts.
+
+O dashboard ampliado também prevê autenticação opcional por um arquivo local `credenciais.json`. **Nunca versione credenciais, cookies, perfis Chrome, dados de produtos internos ou capturas com informações privadas.**
+
+O repositório é público. Antes de publicar novas alterações, revise os dados e o código com atenção e obtenha as permissões necessárias.
+
+## Próximas melhorias
+
+- [ ] Centralizar as configurações de lojas, diretórios e autenticação fora do código.
+- [ ] Consolidar as duas versões do dashboard.
+- [ ] Criar `requirements.txt` e testes com mocks, sem acessar lojas reais.
+- [ ] Documentar exemplos fictícios de planilha e organização de pastas.
+- [ ] Separar com mais clareza ações de cadastro e ações destrutivas.
+- [ ] Adicionar validações e proteção contra alterações indesejadas.
 
 ## Autoria
 
-Desenvolvimento e documentação do projeto de automação de cadastros WooCommerce.
-
-## Licença
-
-Ainda não definida. Não adicionar licença aberta sem confirmar os direitos sobre o código e a autorização de divulgação.
+**Kaue Borges** — projeto de automação de processos e integração com WooCommerce.
