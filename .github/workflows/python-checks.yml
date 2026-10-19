@@ -1,0 +1,44 @@
+name: Python checks (offline)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    name: Validar sintaxe dos scripts
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Compilar estaticamente os scripts
+        run: |
+          python -m compileall -q cadastro_choice.py cadastro_dashboard.py cadastro_dashboardd.py Remover_fotos
+
+      - name: Conferir sintaxe do repositório
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import ast
+
+          paths = list(Path(".").rglob("*.py"))
+          for path in paths:
+              if ".venv" not in path.parts:
+                  ast.parse(path.read_text(encoding="utf-8-sig"), filename=str(path))
+          print(f"Sintaxe validada em {len(paths)} arquivo(s) Python.")
+          PY
+
+# Nenhuma loja e acessada: os scripts nao sao executados.
